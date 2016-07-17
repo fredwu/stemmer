@@ -9,16 +9,16 @@ defmodule Stemmer do
       "hello"
 
       iex> Stemmer.stem("capabilities")
-      "capabilities"
+      "capabiliti"
 
       iex> Stemmer.stem("extraordinary capabilities")
-      ["extraordinary", "capabilities"]
+      ["extraordinary", "capabiliti"]
 
       iex> Stemmer.stem(["capabilities"])
-      ["capabilities"]
+      ["capabiliti"]
 
       iex> Stemmer.stem(["extraordinary", "capabilities"])
-      ["extraordinary", "capabilities"]
+      ["extraordinary", "capabiliti"]
   """
   def stem(input) do
     cond do
