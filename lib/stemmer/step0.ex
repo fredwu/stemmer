@@ -1,21 +1,37 @@
 defmodule Stemmer.Step0 do
   def apply(word) do
     word
-    |> remove_initial_apostrophe()
+    |> trim_apostrophes()
+    |> remove_apostrophe_s()
     |> mark_consonant_y()
   end
 
   @doc """
   ## Examples
 
-      iex> Stemmer.Step0.remove_initial_apostrophe("'ok")
+      iex> Stemmer.Step0.trim_apostrophes("'ok")
       "ok"
 
-      iex> Stemmer.Step0.remove_initial_apostrophe("o'k")
+      iex> Stemmer.Step0.trim_apostrophes("o'k")
+      "o'k"
+
+      iex> Stemmer.Step0.trim_apostrophes("'o'k'")
       "o'k"
   """
-  def remove_initial_apostrophe(word) do
-    String.replace_prefix(word, "'", "")
+  def trim_apostrophes(word) do
+    word
+    |> String.replace_prefix("'", "")
+    |> String.replace_suffix("'", "")
+  end
+
+  @doc """
+  ## Examples
+
+      iex> Stemmer.Step0.remove_apostrophe_s("ok's")
+      "ok"
+  """
+  def remove_apostrophe_s(word) do
+    String.replace_suffix(word, "'s", "")
   end
 
   @doc """
