@@ -6,11 +6,12 @@ defmodule Stemmer.Rules do
   @consonant      "[^#{@v}]"
   @short_syllable "(#{@non_vowel_wxy}#{@vowel}#{@consonant})|(^#{@vowel}#{@consonant})"
 
-  def vowel,     do: @vowel
-  def consonant, do: @consonant
-  def double,    do: "(bb|dd|ff|gg|mm|nn|pp|rr|tt)"
-  def li_ending, do: "(c|d|e|g|h|k|m|n|r|t)"
-  def r_vc,      do: ~r/^#{@consonant}*#{@vowel}+#{@consonant}/
+  def vowel,          do: @vowel
+  def consonant,      do: @consonant
+  def double,         do: "(bb|dd|ff|gg|mm|nn|pp|rr|tt)"
+  def li_ending,      do: "(c|d|e|g|h|k|m|n|r|t)"
+  def short_syllable, do: @short_syllable
+  def r_vc,           do: ~r/^#{@consonant}*#{@vowel}+#{@consonant}/
 
   @doc """
   R1 is the region after the first non-vowel following a vowel, or is the null
