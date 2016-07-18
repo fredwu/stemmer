@@ -1,6 +1,6 @@
 defmodule Stemmer.Engine do
   @doc """
-  ## Examples
+  ## Examples
 
       iex> Stemmer.Engine.start("I")
       "i"
@@ -16,7 +16,9 @@ defmodule Stemmer.Engine do
       word
       |> String.downcase
       |> Stemmer.Step0.apply()
-      |> Stemmer.Step1.apply()
+      |> Stemmer.Step1a.apply()
+      |> Stemmer.Step1b.apply()
+      |> Stemmer.Step1c.apply()
       |> Stemmer.Step2.apply()
       |> Stemmer.Step3.apply()
       |> Stemmer.Step4.apply()

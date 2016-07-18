@@ -7,7 +7,7 @@ defmodule Stemmer.Step0 do
   end
 
   @doc """
-  ## Examples
+  ## Examples
 
       iex> Stemmer.Step0.trim_apostrophes("'ok")
       "ok"
@@ -25,7 +25,7 @@ defmodule Stemmer.Step0 do
   end
 
   @doc """
-  ## Examples
+  ## Examples
 
       iex> Stemmer.Step0.remove_apostrophe_s("ok's")
       "ok"
@@ -42,7 +42,7 @@ defmodule Stemmer.Step0 do
 
   Set initial `y`, or `y` after a vowel, to `Y`.
 
-  ## Examples
+  ## Examples
 
       iex> Stemmer.Step0.mark_consonant_y("youth")
       "Youth"

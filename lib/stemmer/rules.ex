@@ -7,15 +7,15 @@ defmodule Stemmer.Rules do
   @short_syllable "(#{@non_vowel_wxy}#{@vowel}#{@consonant})|(^#{@vowel}#{@consonant})"
 
   def vowel,       do: @vowel
+  def double,      do: "(bb|dd|ff|gg|mm|nn|pp|rr|tt)"
   def r_vc,        do: ~r/^#{@consonant}*#{@vowel}+#{@consonant}/
-  def r_double,    do: ~r/bb|dd|ff|gg|mm|nn|pp|rr|tt/
   def r_li_ending, do: ~r/c|d|e|g|h|k|m|n|r|t/
 
   @doc """
   R1 is the region after the first non-vowel following a vowel, or is the null
   region at the end of the word if there is no such non-vowel.
 
-  ## Examples
+  ## Examples
 
       iex> Stemmer.Rules.r1("beautiful")
       "iful"
@@ -48,7 +48,7 @@ defmodule Stemmer.Rules do
   R2 is the region after the first non-vowel following a vowel in R1, or is
   the null region at the end of the word if there is no such non-vowel.
 
-  ## Examples
+  ## Examples
 
       iex> Stemmer.Rules.r2("beautiful")
       "ul"
@@ -76,7 +76,7 @@ defmodule Stemmer.Rules do
   end
 
   @doc """
-  ## Examples
+  ## Examples
 
       iex> Stemmer.Rules.short?("rap")
       true

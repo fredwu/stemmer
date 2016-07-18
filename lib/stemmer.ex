@@ -1,6 +1,6 @@
 defmodule Stemmer do
   @doc """
-  ## Examples
+  ## Examples
 
       iex> Stemmer.stem("Hello")
       "hello"
