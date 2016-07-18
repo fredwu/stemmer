@@ -2,6 +2,8 @@
 
 An English ([Porter2](http://snowballstem.org/algorithms/english/stemmer.html)) stemming implementation in Elixir.
 
+> In linguistic morphology and information retrieval, __stemming__ is the process of reducing inflected (or sometimes derived) words to their word stem, base or root form—generally a written word form. The stem need not be identical to the morphological root of the word; it is usually sufficient that related words map to the same stem, even if this stem is not in itself a valid root. - [Wikipedia](https://en.wikipedia.org/wiki/Stemming)
+
 ## Usage
 
 The `Stemmer.stem/1` function supports stemming a single word (`String`), a sentence (`String`) or a list of single words (`List` of `String`s).
