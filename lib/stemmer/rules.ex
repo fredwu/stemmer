@@ -7,6 +7,7 @@ defmodule Stemmer.Rules do
   @short_syllable "(#{@non_vowel_wxy}#{@vowel}#{@consonant})|(^#{@vowel}#{@consonant})"
 
   def vowel,       do: @vowel
+  def consonant,   do: @consonant
   def double,      do: "(bb|dd|ff|gg|mm|nn|pp|rr|tt)"
   def r_vc,        do: ~r/^#{@consonant}*#{@vowel}+#{@consonant}/
   def r_li_ending, do: ~r/c|d|e|g|h|k|m|n|r|t/
