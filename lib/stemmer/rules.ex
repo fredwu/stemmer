@@ -4,7 +4,7 @@ defmodule Stemmer.Rules do
   @vowel_wxy      "[#{@v}wxY]"
   @non_vowel_wxy  "[^#{@v}wxY]"
   @consonant      "[^#{@v}]"
-  @short_syllable "(#{@non_vowel_wxy}#{@vowel}#{@consonant})|(^#{@vowel}#{@consonant})"
+  @short_syllable "(#{@consonant}#{@vowel}#{@non_vowel_wxy})|(^#{@vowel}#{@consonant})"
 
   def vowel,          do: @vowel
   def consonant,      do: @consonant
