@@ -7,7 +7,7 @@ defmodule Stemmer.Mixfile do
      elixir: "~> 1.3",
      name: "Stemmer",
      package: package(),
-     description: "A Lovins Porter stemming implementation in Elixir.",
+     description: "An English (Porter2) stemming implementation in Elixir.",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps()]
