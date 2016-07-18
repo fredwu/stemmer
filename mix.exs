@@ -3,7 +3,7 @@ defmodule Stemmer.Mixfile do
 
   def project do
     [app: :stemmer,
-     version: "0.1.0",
+     version: "0.1.0-alpha.0",
      elixir: "~> 1.3",
      name: "Stemmer",
      package: package(),
