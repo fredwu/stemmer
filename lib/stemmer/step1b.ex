@@ -50,10 +50,10 @@ defmodule Stemmer.Step1b do
   def remove_ed_edly_ing_ingly(word) do
     if word =~ ~r/#{Rules.vowel()}.*(ed|edly|ing|ingly)$/ do
       word
-      |> String.replace_suffix("edly", "")
       |> String.replace_suffix("ed", "")
-      |> String.replace_suffix("ingly", "")
+      |> String.replace_suffix("edly", "")
       |> String.replace_suffix("ing", "")
+      |> String.replace_suffix("ingly", "")
       |> post_remove_ed_edly_ing_ingly()
     else
       word
