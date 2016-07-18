@@ -39,8 +39,28 @@ defmodule Stemmer.Rules do
 
       iex> Stemmer.Rules.r1("eucharist")
       "harist"
+
+      iex> Stemmer.Rules.r1("generation")
+      "ation"
+
+      iex> Stemmer.Rules.r1("communication")
+      "ication"
+
+      iex> Stemmer.Rules.r1("arsenal")
+      "al"
   """
   def r1(word) do
+    if word =~ ~r/^(gener|commun|arsen)/ do
+      word
+      |> String.replace_prefix("gener", "")
+      |> String.replace_prefix("commun", "")
+      |> String.replace_prefix("arsen", "")
+    else
+      normal_r1(word)
+    end
+  end
+
+  defp normal_r1(word) do
     if word =~ r_vc do
       String.replace(word, r_vc, "")
     end || ""
@@ -74,7 +94,7 @@ defmodule Stemmer.Rules do
       "ist"
   """
   def r2(word) do
-    word |> r1() |> r1()
+    word |> normal_r1() |> normal_r1()
   end
 
   @doc """
@@ -124,5 +144,31 @@ defmodule Stemmer.Rules do
   """
   def short?(word) do
     r1(word) == "" && word =~ ~r/#{@short_syllable}$/
+  end
+
+  @doc """
+  ## Examples
+
+      iex> Stemmer.Rules.invariant?("sky")
+      true
+
+      iex> Stemmer.Rules.invariant?("skynet")
+      false
+  """
+  def invariant?(word) do
+    Enum.member?(~w(sky news howe atlas cosmos bias andes), word)
+  end
+
+  @doc """
+  ## Examples
+
+      iex> Stemmer.Rules.invariant_after_1a?("inning")
+      true
+
+      iex> Stemmer.Rules.invariant_after_1a?("manning")
+      false
+  """
+  def invariant_after_1a?(word) do
+    Enum.member?(~w(inning outing canning herring earring proceed exceed succeed), word)
   end
 end
