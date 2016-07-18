@@ -63,6 +63,10 @@ defmodule Stemmer.Step0 do
       "syzygy"
   """
   def mark_consonant_y(word) do
-    String.replace(word, ~r/^y|(#{Stemmer.Rules.vowel()})y/, "\\1Y")
+    if word =~ "y" do
+      String.replace(word, ~r/^y|(#{Stemmer.Rules.vowel()})y/, "\\1Y")
+    else
+      word
+    end
   end
 end
