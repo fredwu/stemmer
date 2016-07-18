@@ -150,25 +150,29 @@ defmodule Stemmer.Rules do
   ## Examples
 
       iex> Stemmer.Rules.invariant?("sky")
-      true
+      {true, "sky"}
 
       iex> Stemmer.Rules.invariant?("skynet")
-      false
+      {false, "skynet"}
   """
   def invariant?(word) do
-    Enum.member?(~w(sky news howe atlas cosmos bias andes), word)
+    bool = Enum.member?(~w(sky news howe atlas cosmos bias andes), word)
+
+    {bool, word}
   end
 
   @doc """
   ## Examples
 
       iex> Stemmer.Rules.invariant_after_1a?("inning")
-      true
+      {true, "inning"}
 
       iex> Stemmer.Rules.invariant_after_1a?("manning")
-      false
+      {false, "manning"}
   """
   def invariant_after_1a?(word) do
-    Enum.member?(~w(inning outing canning herring earring proceed exceed succeed), word)
+    bool = Enum.member?(~w(inning outing canning herring earring proceed exceed succeed), word)
+
+    {bool, word}
   end
 end

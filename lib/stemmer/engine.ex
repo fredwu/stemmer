@@ -25,32 +25,33 @@ defmodule Stemmer.Engine do
   def start(word) do
     word = String.downcase(word)
 
-    cond do
-      String.length(word) <= 2 ->
-        word
-      true ->
-        word = word
-               |> Stemmer.SpecialWord.apply()
-
-        if Rules.invariant?(word) do
-          word
-        else
-          word = word
-                 |> Stemmer.Step0.apply()
-                 |> Stemmer.Step1a.apply()
-
-          if Rules.invariant_after_1a?(word) do
-            word
-          else
-            word
-            |> Stemmer.Step1b.apply()
-            |> Stemmer.Step1c.apply()
-            |> Stemmer.Step2.apply()
-            |> Stemmer.Step3.apply()
-            |> Stemmer.Step4.apply()
-            |> Stemmer.Step5.apply()
-          end
-        end
+    if String.length(word) <= 2 do
+      word
+    else
+      word
+      |> Stemmer.SpecialWord.apply()
+      |> Rules.invariant?()
+      |> post_invariant()
     end
+  end
+
+  defp post_invariant({true, word}), do: word
+  defp post_invariant({false, word}) do
+    word
+    |> Stemmer.Step0.apply()
+    |> Stemmer.Step1a.apply()
+    |> Rules.invariant_after_1a?()
+    |> post_invariant_after_1a()
+  end
+
+  defp post_invariant_after_1a({true, word}), do: word
+  defp post_invariant_after_1a({false, word}) do
+    word
+    |> Stemmer.Step1b.apply()
+    |> Stemmer.Step1c.apply()
+    |> Stemmer.Step2.apply()
+    |> Stemmer.Step3.apply()
+    |> Stemmer.Step4.apply()
+    |> Stemmer.Step5.apply()
   end
 end
