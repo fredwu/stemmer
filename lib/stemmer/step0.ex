@@ -1,4 +1,6 @@
 defmodule Stemmer.Step0 do
+  alias Stemmer.Rules
+
   def apply(word) do
     word
     |> trim_apostrophes()
@@ -64,7 +66,7 @@ defmodule Stemmer.Step0 do
   """
   def mark_consonant_y(word) do
     if word =~ "y" do
-      String.replace(word, ~r/^y|(#{Stemmer.Rules.vowel()})y/, "\\1Y")
+      String.replace(word, ~r/^y|(#{Rules.vowel()})y/, "\\1Y")
     else
       word
     end
