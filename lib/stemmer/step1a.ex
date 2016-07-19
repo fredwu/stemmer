@@ -49,7 +49,7 @@ defmodule Stemmer.Step1a do
 
   @doc """
   Delete if the preceding word part contains a vowel not immediately before
-  the `s` (so gas and this retain the s, gaps and kiwis lose it).
+  the `s` (so `gas` and `this` retain the `s`, `gaps` and `kiwis` lose it).
 
   ## Examples
 
@@ -64,12 +64,15 @@ defmodule Stemmer.Step1a do
 
       iex> Stemmer.Step1a.remove_s("kiwis")
       "kiwi"
+
+      iex> Stemmer.Step1a.remove_s("abyss")
+      "abyss"
   """
   def remove_s(word) do
-    if word =~ ~r/#{Rules.vowel()}.+s$/ do
-      String.replace_suffix(word, "s", "")
-    else
-      word
+    cond do
+      word =~ ~r/(us|ss)$/             -> word
+      word =~ ~r/#{Rules.vowel()}.+s$/ -> String.replace_suffix(word, "s", "")
+      true                             -> word
     end
   end
 end
