@@ -186,7 +186,7 @@ defmodule Stemmer.Rules do
     if r1(word) =~ ~r/#{suffix}$/ do
       {:found, String.replace_suffix(word, suffix, replacement)}
     else
-      {:not_found, word}
+      {:next, word}
     end
   end
 end

@@ -38,16 +38,16 @@ defmodule Stemmer.Step3 do
   """
   def replace_suffix_in_r1(word) do
     {_, word} =
-      with {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "ational", "ate"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "tional", "tion"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "alize", "al"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "icate", "ic"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "iciti", "ic"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "ical", "ic"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "ness", ""),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "ful", ""),
-           {:not_found, _word} <- replace_suffix_ative_in_r2(word)
-        do {:not_found, word}
+      with {:next, _word} <- Rules.replace_suffix_in_r1(word, "ational", "ate"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "tional", "tion"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "alize", "al"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "icate", "ic"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "iciti", "ic"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "ical", "ic"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "ness", ""),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "ful", ""),
+           {:next, _word} <- replace_suffix_ative_in_r2(word)
+        do {:found, word}
       end
 
     word
@@ -57,7 +57,7 @@ defmodule Stemmer.Step3 do
     if Rules.r2(word) =~ ~r/ative$/ do
       {:found, String.replace_suffix(word, "ative", "")}
     else
-      {:not_found, word}
+      {:next, word}
     end
   end
 end

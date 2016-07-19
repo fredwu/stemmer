@@ -26,9 +26,9 @@ defmodule Stemmer.Step4 do
   """
   def remove_suffix_in_r2(word) do
     {_, word} =
-      with {:not_found, _word} <- remove_suffix(word),
-           {:not_found, _word} <- remove_suffix_ion(word)
-        do {:not_found, word}
+      with {:next, _word} <- remove_suffix(word),
+           {:next, _word} <- remove_suffix_ion(word)
+        do {:found, word}
       end
 
     word
@@ -40,7 +40,7 @@ defmodule Stemmer.Step4 do
     if Rules.r2(word) =~ r_suffix do
       {:found, String.replace(word, r_suffix, "")}
     else
-      {:not_found, word}
+      {:next, word}
     end
   end
 
@@ -48,7 +48,7 @@ defmodule Stemmer.Step4 do
     if Rules.r2(word) =~ ~r/(s|t)ion$/ do
       {:found, String.replace_suffix(word, "ion", "")}
     else
-      {:not_found, word}
+      {:next, word}
     end
   end
 end

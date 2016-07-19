@@ -89,31 +89,31 @@ defmodule Stemmer.Step2 do
   """
   def replace_suffix_in_r1(word) do
     {_, word} =
-      with {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "ization", "ize"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "ational", "ate"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "fulness", "ful"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "ousness", "ous"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "iveness", "ive"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "tional", "tion"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "biliti", "ble"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "lessli", "less"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "entli", "ent"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "ation", "ate"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "alism", "al"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "aliti", "al"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "ousli", "ous"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "iviti", "ive"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "fulli", "ful"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "enci", "ence"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "anci", "ance"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "abli", "able"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "izer", "ize"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "ator", "ate"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "alli", "al"),
-           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "bli", "ble"),
-           {:not_found, _word} <- replace_suffix_ogi(word),
-           {:not_found, _word} <- replace_suffix_li(word)
-        do {:not_found, word}
+      with {:next, _word} <- Rules.replace_suffix_in_r1(word, "ization", "ize"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "ational", "ate"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "fulness", "ful"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "ousness", "ous"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "iveness", "ive"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "tional", "tion"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "biliti", "ble"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "lessli", "less"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "entli", "ent"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "ation", "ate"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "alism", "al"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "aliti", "al"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "ousli", "ous"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "iviti", "ive"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "fulli", "ful"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "enci", "ence"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "anci", "ance"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "abli", "able"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "izer", "ize"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "ator", "ate"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "alli", "al"),
+           {:next, _word} <- Rules.replace_suffix_in_r1(word, "bli", "ble"),
+           {:next, _word} <- replace_suffix_ogi(word),
+           {:next, _word} <- replace_suffix_li(word)
+        do {:found, word}
       end
 
     word
@@ -123,7 +123,7 @@ defmodule Stemmer.Step2 do
     if Rules.r1(word) =~ ~r/logi$/ do
       {:found, String.replace_suffix(word, "ogi", "og")}
     else
-      {:not_found, word}
+      {:next, word}
     end
   end
 
@@ -131,7 +131,7 @@ defmodule Stemmer.Step2 do
     if Rules.r1(word) =~ ~r/#{Rules.li_ending}li$/ do
       {:found, String.replace_suffix(word, "li", "")}
     else
-      {:not_found, word}
+      {:next, word}
     end
   end
 end

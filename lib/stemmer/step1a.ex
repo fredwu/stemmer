@@ -14,11 +14,11 @@ defmodule Stemmer.Step1a do
   """
   def replace_suffix(word) do
     {_, word} =
-      with {:not_found, _word} <- replace_sses(word),
-           {:not_found, _word} <- replace_ied_ies(word),
-           {:not_found, _word} <- leave_us_ss(word),
-           {:not_found, _word} <- remove_s(word)
-        do {:not_found, word}
+      with {:next, _word} <- replace_sses(word),
+           {:next, _word} <- replace_ied_ies(word),
+           {:next, _word} <- leave_us_ss(word),
+           {:next, _word} <- remove_s(word)
+        do {:found, word}
       end
 
     word
@@ -36,7 +36,7 @@ defmodule Stemmer.Step1a do
     if word =~ ~r/sses$/ do
       {:found, String.replace_suffix(word, "sses", "ss")}
     else
-      {:not_found, word}
+      {:next, word}
     end
   end
 
@@ -69,7 +69,7 @@ defmodule Stemmer.Step1a do
 
       {:found, word}
     else
-      {:not_found, word}
+      {:next, word}
     end
   end
 
@@ -85,7 +85,7 @@ defmodule Stemmer.Step1a do
     if word =~ ~r/(us|ss)$/ do
       {:found, word}
     else
-      {:not_found, word}
+      {:next, word}
     end
   end
 
@@ -96,10 +96,10 @@ defmodule Stemmer.Step1a do
   ## Examples
 
       iex> Stemmer.Step1a.remove_s("gas")
-      {:not_found, "gas"}
+      {:next, "gas"}
 
       iex> Stemmer.Step1a.remove_s("this")
-      {:not_found, "this"}
+      {:next, "this"}
 
       iex> Stemmer.Step1a.remove_s("gaps")
       {:found, "gap"}
@@ -111,7 +111,7 @@ defmodule Stemmer.Step1a do
     if word =~ ~r/#{Rules.vowel()}.+s$/ do
       {:found, String.replace_suffix(word, "s", "")}
     else
-      {:not_found, word}
+      {:next, word}
     end
   end
 end
