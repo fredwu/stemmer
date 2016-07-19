@@ -86,6 +86,12 @@ defmodule Stemmer.Step2 do
 
       iex> Stemmer.Step2.replace_suffix_in_r1("mopli")
       "mopli"
+
+      iex> Stemmer.Step2.replace_suffix_in_r1("geologi")
+      "geolog"
+
+      iex> Stemmer.Step2.replace_suffix_in_r1("greatli")
+      "great"
   """
   def replace_suffix_in_r1(word) do
     {_, word} =
@@ -120,7 +126,7 @@ defmodule Stemmer.Step2 do
   end
 
   defp replace_suffix_ogi(word) do
-    if Rules.r1(word) =~ ~r/logi$/ do
+    if Rules.r1(word) =~ ~r/ogi$/ && word =~ ~r/logi$/ do
       {:found, String.replace_suffix(word, "ogi", "og")}
     else
       {:next, word}
@@ -128,7 +134,7 @@ defmodule Stemmer.Step2 do
   end
 
   defp replace_suffix_li(word) do
-    if Rules.r1(word) =~ ~r/#{Rules.li_ending}li$/ do
+    if Rules.r1(word) =~ ~r/li$/ && word =~ ~r/#{Rules.li_ending}li$/ do
       {:found, String.replace_suffix(word, "li", "")}
     else
       {:next, word}
