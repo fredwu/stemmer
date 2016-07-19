@@ -23,6 +23,9 @@ defmodule Stemmer.Step4 do
 
       iex> Stemmer.Step4.remove_suffix_in_r2("concepcion")
       "concepcion"
+
+      iex> Stemmer.Step4.remove_suffix_in_r2("addition")
+      "addit"
   """
   def remove_suffix_in_r2(word) do
     {_, word} =
@@ -45,7 +48,7 @@ defmodule Stemmer.Step4 do
   end
 
   defp remove_suffix_ion(word) do
-    if Rules.r2(word) =~ ~r/(s|t)ion$/ do
+    if Rules.r2(word) =~ ~r/ion$/ && word =~ ~r/(s|t)ion$/ do
       {:found, String.replace_suffix(word, "ion", "")}
     else
       {:next, word}
