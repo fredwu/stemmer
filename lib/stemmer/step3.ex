@@ -37,28 +37,27 @@ defmodule Stemmer.Step3 do
       "imagin"
   """
   def replace_suffix_in_r1(word) do
-    word_r1 = Rules.r1(word)
+    {_, word} =
+      with {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "ational", "ate"),
+           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "tional", "tion"),
+           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "alize", "al"),
+           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "icate", "ic"),
+           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "iciti", "ic"),
+           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "ical", "ic"),
+           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "ness", ""),
+           {:not_found, _word} <- Rules.replace_suffix_in_r1(word, "ful", ""),
+           {:not_found, _word} <- replace_suffix_ative_in_r2(word)
+        do {:not_found, word}
+      end
 
-    cond do
-      word_r1 =~ ~r/tional$/ ->
-        String.replace_suffix(word, "tional", "tion")
-      word_r1 =~ ~r/ational$/ ->
-        String.replace_suffix(word, "ational", "ate")
-      word_r1 =~ ~r/alize$/ ->
-        String.replace_suffix(word, "alize", "al")
-      word_r1 =~ ~r/(icate|iciti|ical)$/ ->
-        word
-        |> String.replace_suffix("icate", "ic")
-        |> String.replace_suffix("iciti", "ic")
-        |> String.replace_suffix("ical", "ic")
-      word_r1 =~ ~r/(ful|ness)$/ ->
-        word
-        |> String.replace_suffix("ful", "")
-        |> String.replace_suffix("ness", "")
-      Rules.r2(word) =~ ~r/ative$/ ->
-        String.replace_suffix(word, "ative", "")
-      true ->
-        word
+    word
+  end
+
+  defp replace_suffix_ative_in_r2(word) do
+    if Rules.r2(word) =~ ~r/ative$/ do
+      {:found, String.replace_suffix(word, "ative", "")}
+    else
+      {:not_found, word}
     end
   end
 end

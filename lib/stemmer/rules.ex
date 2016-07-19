@@ -175,4 +175,18 @@ defmodule Stemmer.Rules do
 
     {bool, word}
   end
+
+  @doc """
+  ## Examples
+
+      iex> Stemmer.Rules.replace_suffix_in_r1("sensational", "ational", "ate")
+      {:found, "sensate"}
+  """
+  def replace_suffix_in_r1(word, suffix, replacement) do
+    if r1(word) =~ ~r/#{suffix}$/ do
+      {:found, String.replace_suffix(word, suffix, replacement)}
+    else
+      {:not_found, word}
+    end
+  end
 end
