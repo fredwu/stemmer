@@ -8,10 +8,10 @@ defmodule Stemmer.SpecialWord do
   ## Examples
 
       iex> Stemmer.SpecialWord.special_word("skis")
-      "ski"
+      {true, "ski"}
 
       iex> Stemmer.SpecialWord.special_word("buying")
-      "buying"
+      {false, "buying"}
   """
   def special_word(word) do
     mapping = %{
@@ -29,9 +29,9 @@ defmodule Stemmer.SpecialWord do
     }
 
     if mapping |> Map.keys() |> Enum.member?(word) do
-      mapping[word]
+      {true, mapping[word]}
     else
-      word
+      {false, word}
     end
   end
 end

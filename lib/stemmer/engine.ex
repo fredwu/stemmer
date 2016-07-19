@@ -21,6 +21,9 @@ defmodule Stemmer.Engine do
 
       iex> Stemmer.Engine.start("inning")
       "inning"
+
+      iex> Stemmer.Engine.start("only")
+      "onli"
   """
   def start(word) do
     word = String.downcase(word)
@@ -30,9 +33,15 @@ defmodule Stemmer.Engine do
     else
       word
       |> Stemmer.SpecialWord.apply()
-      |> Rules.invariant?()
-      |> post_invariant()
+      |> post_special_word()
     end
+  end
+
+  defp post_special_word({true, word}), do: word
+  defp post_special_word({false, word}) do
+    word
+    |> Rules.invariant?()
+    |> post_invariant()
   end
 
   defp post_invariant({true, word}), do: word
