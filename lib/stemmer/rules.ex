@@ -50,11 +50,10 @@ defmodule Stemmer.Rules do
       "al"
   """
   def r1(word) do
-    if word =~ ~r/^(gener|commun|arsen)/ do
-      word
-      |> String.replace_prefix("gener", "")
-      |> String.replace_prefix("commun", "")
-      |> String.replace_prefix("arsen", "")
+    r_prefix = ~r/^(gener|commun|arsen)/
+
+    if word =~ r_prefix do
+      String.replace(word, r_prefix, "")
     else
       normal_r1(word)
     end
