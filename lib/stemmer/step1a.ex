@@ -3,9 +3,25 @@ defmodule Stemmer.Step1a do
 
   def apply(word) do
     word
-    |> replace_sses()
-    |> replace_ied_ies()
-    |> remove_s()
+    |> replace_suffix()
+  end
+
+  @doc """
+  ## Examples
+
+      iex> Stemmer.Step1a.replace_suffix("abyss")
+      "abyss"
+  """
+  def replace_suffix(word) do
+    {_, word} =
+      with {:not_found, _word} <- replace_sses(word),
+           {:not_found, _word} <- replace_ied_ies(word),
+           {:not_found, _word} <- leave_us_ss(word),
+           {:not_found, _word} <- remove_s(word)
+        do {:not_found, word}
+      end
+
+    word
   end
 
   @doc """
@@ -14,10 +30,14 @@ defmodule Stemmer.Step1a do
   ## Examples
 
       iex> Stemmer.Step1a.replace_sses("actresses")
-      "actress"
+      {:found, "actress"}
   """
   def replace_sses(word) do
-    String.replace_suffix(word, "sses", "ss")
+    if word =~ ~r/sses$/ do
+      {:found, String.replace_suffix(word, "sses", "ss")}
+    else
+      {:not_found, word}
+    end
   end
 
   @doc """
@@ -27,23 +47,45 @@ defmodule Stemmer.Step1a do
   ## Examples
 
       iex> Stemmer.Step1a.replace_ied_ies("tied")
-      "tie"
+      {:found, "tie"}
 
       iex> Stemmer.Step1a.replace_ied_ies("ties")
-      "tie"
+      {:found, "tie"}
 
       iex> Stemmer.Step1a.replace_ied_ies("cries")
-      "cri"
+      {:found, "cri"}
   """
   def replace_ied_ies(word) do
-    if String.length(word) > 4 do
-      word
-      |> String.replace_suffix("ied", "i")
-      |> String.replace_suffix("ies", "i")
+    if word =~ ~r/(ied|ies)$/ do
+      word = if String.length(word) > 4 do
+        word
+        |> String.replace_suffix("ied", "i")
+        |> String.replace_suffix("ies", "i")
+      else
+        word
+        |> String.replace_suffix("ied", "ie")
+        |> String.replace_suffix("ies", "ie")
+      end
+
+      {:found, word}
     else
-      word
-      |> String.replace_suffix("ied", "ie")
-      |> String.replace_suffix("ies", "ie")
+      {:not_found, word}
+    end
+  end
+
+  @doc """
+  Do nothing.
+
+  ## Examples
+
+      iex> Stemmer.Step1a.leave_us_ss("abyss")
+      {:found, "abyss"}
+  """
+  def leave_us_ss(word) do
+    if word =~ ~r/(us|ss)$/ do
+      {:found, word}
+    else
+      {:not_found, word}
     end
   end
 
@@ -54,25 +96,22 @@ defmodule Stemmer.Step1a do
   ## Examples
 
       iex> Stemmer.Step1a.remove_s("gas")
-      "gas"
+      {:not_found, "gas"}
 
       iex> Stemmer.Step1a.remove_s("this")
-      "this"
+      {:not_found, "this"}
 
       iex> Stemmer.Step1a.remove_s("gaps")
-      "gap"
+      {:found, "gap"}
 
       iex> Stemmer.Step1a.remove_s("kiwis")
-      "kiwi"
-
-      iex> Stemmer.Step1a.remove_s("abyss")
-      "abyss"
+      {:found, "kiwi"}
   """
   def remove_s(word) do
-    cond do
-      word =~ ~r/(us|ss)$/             -> word
-      word =~ ~r/#{Rules.vowel()}.+s$/ -> String.replace_suffix(word, "s", "")
-      true                             -> word
+    if word =~ ~r/#{Rules.vowel()}.+s$/ do
+      {:found, String.replace_suffix(word, "s", "")}
+    else
+      {:not_found, word}
     end
   end
 end
