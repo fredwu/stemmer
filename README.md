@@ -14,6 +14,12 @@ Stemmer.stem("extraordinary capabilities")      # => "extraordinari capabl"
 Stemmer.stem(["extraordinary", "capabilities"]) # => ["extraordinari", "capabl"]
 ```
 
+## Compatibility
+
+Stemmer is near-100% compatible with the official Porter2 implementation, it is tested against the official [`diffs.txt`](http://snowball.tartarus.org/algorithms/english/diffs.txt) which contains more than 29000 words.
+
+Please see [the comment](test/stemmer_test.exs) on an edge case where Stemmer's result differs to the official one.
+
 ## License
 
 Licensed under [MIT](http://fredwu.mit-license.org/).
