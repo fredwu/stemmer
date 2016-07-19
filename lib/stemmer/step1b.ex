@@ -3,8 +3,25 @@ defmodule Stemmer.Step1b do
 
   def apply(word) do
     word
-    |> replace_eed_eedly_in_r1()
-    |> remove_ed_edly_ing_ingly()
+    |> replace_suffix()
+  end
+
+  @doc """
+  ## Examples
+
+      iex> Stemmer.Step1b.replace_suffix("bleed")
+      "bleed"
+  """
+  def replace_suffix(word) do
+    {_, word} =
+      with {:not_found, _word} <- replace_eed_eedly(word, "eedly"),
+           {:not_found, _word} <- remove_ed_edly_ing_ingly(word, "ingly|edly"),
+           {:not_found, _word} <- replace_eed_eedly(word, "eed"),
+           {:not_found, _word} <- remove_ed_edly_ing_ingly(word, "ing|ed")
+        do {:not_found, word}
+      end
+
+    word
   end
 
   @doc """
@@ -12,21 +29,33 @@ defmodule Stemmer.Step1b do
 
   ## Examples
 
-      iex> Stemmer.Step1b.replace_eed_eedly_in_r1("proceed")
-      "procee"
+      iex> Stemmer.Step1b.replace_eed_eedly("proceed", "eed")
+      {:found, "procee"}
 
-      iex> Stemmer.Step1b.replace_eed_eedly_in_r1("proceedly")
-      "procee"
+      iex> Stemmer.Step1b.replace_eed_eedly("proceedly", "eedly")
+      {:found, "procee"}
 
-      iex> Stemmer.Step1b.replace_eed_eedly_in_r1("need")
-      "need"
+      iex> Stemmer.Step1b.replace_eed_eedly("need", "eed")
+      {:found, "need"}
   """
-  def replace_eed_eedly_in_r1(word) do
-    cond do
-      Rules.r1(word) =~ "eedly" -> String.replace_suffix(word, "eedly", "ee")
-      Rules.r1(word) =~ "eed"   -> String.replace_suffix(word, "eed", "ee")
-      true                      -> word
+  def replace_eed_eedly(word, suffix) do
+    if word =~ ~r/#{suffix}$/ do
+      replace_eed_eedly_in_r1(word, suffix)
+    else
+      {:not_found, word}
     end
+  end
+
+  defp replace_eed_eedly_in_r1(word, suffix) do
+    r_ending = ~r/#{suffix}$/
+
+    word = if Rules.r1(word) =~ r_ending do
+      String.replace(word, r_ending, "ee")
+    else
+      word
+    end
+
+    {:found, word}
   end
 
   @doc """
@@ -38,25 +67,26 @@ defmodule Stemmer.Step1b do
 
   ## Examples
 
-      iex> Stemmer.Step1b.remove_ed_edly_ing_ingly("luxuriating")
-      "luxuriate"
+      iex> Stemmer.Step1b.remove_ed_edly_ing_ingly("luxuriating", "ing")
+      {:found, "luxuriate"}
 
-      iex> Stemmer.Step1b.remove_ed_edly_ing_ingly("hopping")
-      "hop"
+      iex> Stemmer.Step1b.remove_ed_edly_ing_ingly("hopping", "ing")
+      {:found, "hop"}
 
-      iex> Stemmer.Step1b.remove_ed_edly_ing_ingly("hoping")
-      "hope"
+      iex> Stemmer.Step1b.remove_ed_edly_ing_ingly("hoping", "ing")
+      {:found, "hope"}
   """
-  def remove_ed_edly_ing_ingly(word) do
-    if word =~ ~r/#{Rules.vowel()}.*(ed|edly|ing|ingly)$/ do
-      word
-      |> String.replace_suffix("ed", "")
-      |> String.replace_suffix("edly", "")
-      |> String.replace_suffix("ing", "")
-      |> String.replace_suffix("ingly", "")
+  def remove_ed_edly_ing_ingly(word, suffix) do
+    r_ending = ~r/(#{Rules.vowel()}.*)(#{suffix})$/
+
+    if word =~ r_ending do
+      word = word
+      |> String.replace(r_ending, "\\1")
       |> post_remove_ed_edly_ing_ingly()
+
+      {:found, word}
     else
-      word
+      {:not_found, word}
     end
   end
 
