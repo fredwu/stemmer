@@ -94,7 +94,7 @@ defmodule Stemmer.Rules do
       "ist"
   """
   def r2(word) do
-    word |> normal_r1() |> normal_r1()
+    word |> r1() |> normal_r1()
   end
 
   @doc """

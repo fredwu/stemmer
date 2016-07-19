@@ -24,6 +24,9 @@ defmodule Stemmer.Engine do
 
       iex> Stemmer.Engine.start("only")
       "onli"
+
+      iex> Stemmer.Engine.start("communicate")
+      "communic"
   """
   def start(word) do
     word = String.downcase(word)
