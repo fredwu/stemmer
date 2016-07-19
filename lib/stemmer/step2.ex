@@ -92,6 +92,9 @@ defmodule Stemmer.Step2 do
 
       iex> Stemmer.Step2.replace_suffix_in_r1("greatli")
       "great"
+
+      iex> Stemmer.Step2.replace_suffix_in_r1("fluentli")
+      "fluentli"
   """
   def replace_suffix_in_r1(word) do
     {_, word} =

@@ -55,7 +55,7 @@ defmodule Stemmer.Step4 do
     if Rules.r2(word) =~ suffix do
       {:found, String.replace_suffix(word, suffix, "")}
     else
-      {:next, word}
+      {:found, word}
     end
   end
 

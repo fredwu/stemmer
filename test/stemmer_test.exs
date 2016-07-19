@@ -14,11 +14,7 @@ defmodule StemmerTest do
     |> Enum.each(fn (line) ->
       [word, official_stemmed] = String.split(line)
 
-      # according to the official Porter2 algorithm `fluently` should be stemmed
-      # to `fluent`, however the test file suggests it stemmed to `fluentli`
-      unless word == "fluently" do
-        assert Stemmer.stem(word) == official_stemmed
-      end
+      assert Stemmer.stem(word) == official_stemmed
     end)
   end
 end

@@ -1,15 +1,14 @@
 defmodule Stemmer.Rules do
   @v              "aeiouy"
   @vowel          "[#{@v}]"
-  @vowel_wxy      "[#{@v}wxY]"
   @non_vowel_wxy  "[^#{@v}wxY]"
   @consonant      "[^#{@v}]"
-  @short_syllable "(#{@consonant}#{@vowel}#{@non_vowel_wxy})|(^#{@vowel}#{@consonant})"
+  @short_syllable "((#{@consonant}#{@vowel}#{@non_vowel_wxy})|(^#{@vowel}#{@consonant}))"
 
   def vowel,          do: @vowel
   def consonant,      do: @consonant
   def double,         do: "(bb|dd|ff|gg|mm|nn|pp|rr|tt)"
-  def li_ending,      do: "(c|d|e|g|h|k|m|n|r|t)"
+  def li_ending,      do: "[cdeghkmnrt]"
   def short_syllable, do: @short_syllable
   def r_vc,           do: ~r/^#{@consonant}*#{@vowel}+#{@consonant}/
 
@@ -182,10 +181,18 @@ defmodule Stemmer.Rules do
       {:found, "sensate"}
   """
   def replace_suffix_in_r1(word, suffix, replacement) do
+    if word =~ ~r/#{suffix}$/ do
+      found_suffix_in_r1(word, suffix, replacement)
+    else
+      {:next, word}
+    end
+  end
+
+  defp found_suffix_in_r1(word, suffix, replacement) do
     if r1(word) =~ ~r/#{suffix}$/ do
       {:found, String.replace_suffix(word, suffix, replacement)}
     else
-      {:next, word}
+      {:found, word}
     end
   end
 end
