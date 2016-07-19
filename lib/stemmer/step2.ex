@@ -13,7 +13,7 @@ defmodule Stemmer.Step2 do
   ## Examples
 
       iex> Stemmer.Step2.replace_suffix_in_r1("sensational")
-      "sensation"
+      "sensate"
 
       iex> Stemmer.Step2.replace_suffix_in_r1("sentenci")
       "sentence"
@@ -88,57 +88,58 @@ defmodule Stemmer.Step2 do
       "mopli"
   """
   def replace_suffix_in_r1(word) do
-    word_r1 = Rules.r1(word)
+    {_, word} =
+      with {:not_found, _word} <- replace_suffix_by(word, "ization", "ize"),
+           {:not_found, _word} <- replace_suffix_by(word, "ational", "ate"),
+           {:not_found, _word} <- replace_suffix_by(word, "fulness", "ful"),
+           {:not_found, _word} <- replace_suffix_by(word, "ousness", "ous"),
+           {:not_found, _word} <- replace_suffix_by(word, "iveness", "ive"),
+           {:not_found, _word} <- replace_suffix_by(word, "tional", "tion"),
+           {:not_found, _word} <- replace_suffix_by(word, "biliti", "ble"),
+           {:not_found, _word} <- replace_suffix_by(word, "lessli", "less"),
+           {:not_found, _word} <- replace_suffix_by(word, "entli", "ent"),
+           {:not_found, _word} <- replace_suffix_by(word, "ation", "ate"),
+           {:not_found, _word} <- replace_suffix_by(word, "alism", "al"),
+           {:not_found, _word} <- replace_suffix_by(word, "aliti", "al"),
+           {:not_found, _word} <- replace_suffix_by(word, "ousli", "ous"),
+           {:not_found, _word} <- replace_suffix_by(word, "iviti", "ive"),
+           {:not_found, _word} <- replace_suffix_by(word, "fulli", "ful"),
+           {:not_found, _word} <- replace_suffix_by(word, "enci", "ence"),
+           {:not_found, _word} <- replace_suffix_by(word, "anci", "ance"),
+           {:not_found, _word} <- replace_suffix_by(word, "abli", "able"),
+           {:not_found, _word} <- replace_suffix_by(word, "izer", "ize"),
+           {:not_found, _word} <- replace_suffix_by(word, "ator", "ate"),
+           {:not_found, _word} <- replace_suffix_by(word, "alli", "al"),
+           {:not_found, _word} <- replace_suffix_by(word, "bli", "ble"),
+           {:not_found, _word} <- replace_suffix_ogi(word),
+           {:not_found, _word} <- replace_suffix_li(word)
+        do {:not_found, word}
+      end
 
-    cond do
-      word_r1 =~ ~r/tional$/ ->
-        String.replace_suffix(word, "tional", "tion")
-      word_r1 =~ ~r/enci$/ ->
-        String.replace_suffix(word, "enci", "ence")
-      word_r1 =~ ~r/anci$/ ->
-        String.replace_suffix(word, "anci", "ance")
-      word_r1 =~ ~r/abli$/ ->
-        String.replace_suffix(word, "abli", "able")
-      word_r1 =~ ~r/entli$/ ->
-        String.replace_suffix(word, "entli", "ent")
-      word_r1 =~ ~r/(izer|ization)$/ ->
-        word
-        |> String.replace_suffix("izer", "ize")
-        |> String.replace_suffix("ization", "ize")
-      word_r1 =~ ~r/(ational|ation|ator)$/ ->
-        word
-        |> String.replace_suffix("ational", "ate")
-        |> String.replace_suffix("ation", "ate")
-        |> String.replace_suffix("ator", "ate")
-      word_r1 =~ ~r/(alism|aliti|alli)$/ ->
-        word
-        |> String.replace_suffix("alism", "al")
-        |> String.replace_suffix("aliti", "al")
-        |> String.replace_suffix("alli", "al")
-      word_r1 =~ ~r/fulness$/ ->
-        String.replace_suffix(word, "fulness", "ful")
-      word_r1 =~ ~r/(ousli|ousness)$/ ->
-        word
-        |> String.replace_suffix("ousli", "ous")
-        |> String.replace_suffix("ousness", "ous")
-      word_r1 =~ ~r/(iveness|iviti)$/ ->
-        word
-        |> String.replace_suffix("iveness", "ive")
-        |> String.replace_suffix("iviti", "ive")
-      word_r1 =~ ~r/(biliti|bli)$/ ->
-        word
-        |> String.replace_suffix("biliti", "ble")
-        |> String.replace_suffix("bli", "ble")
-      word_r1 =~ ~r/logi$/ ->
-        String.replace_suffix(word, "ogi", "og")
-      word_r1 =~ ~r/fulli$/ ->
-        String.replace_suffix(word, "fulli", "ful")
-      word_r1 =~ ~r/lessli$/ ->
-        String.replace_suffix(word, "lessli", "less")
-      word_r1 =~ ~r/#{Rules.li_ending}li$/ ->
-        String.replace_suffix(word, "li", "")
-      true ->
-        word
+    word
+  end
+
+  defp replace_suffix_by(word, suffix, replacement) do
+    if Rules.r1(word) =~ ~r/#{suffix}$/ do
+      {:found, String.replace_suffix(word, suffix, replacement)}
+    else
+      {:not_found, word}
+    end
+  end
+
+  defp replace_suffix_ogi(word) do
+    if Rules.r1(word) =~ ~r/logi$/ do
+      {:found, String.replace_suffix(word, "ogi", "og")}
+    else
+      {:not_found, word}
+    end
+  end
+
+  defp replace_suffix_li(word) do
+    if Rules.r1(word) =~ ~r/#{Rules.li_ending}li$/ do
+      {:found, String.replace_suffix(word, "li", "")}
+    else
+      {:not_found, word}
     end
   end
 end
