@@ -25,16 +25,30 @@ defmodule Stemmer.Step4 do
       "concepcion"
   """
   def remove_suffix_in_r2(word) do
-    word_r2  = Rules.r2(word)
+    {_, word} =
+      with {:not_found, _word} <- remove_suffix(word),
+           {:not_found, _word} <- remove_suffix_ion(word)
+        do {:not_found, word}
+      end
+
+    word
+  end
+
+  defp remove_suffix(word) do
     r_suffix = ~r/(al|ance|ence|er|ic|able|ible|ant|ement|ment|ent|ism|ate|iti|ous|ive|ize)$/
 
-    cond do
-      word_r2 =~ r_suffix ->
-        String.replace(word, r_suffix, "")
-      word_r2 =~ ~r/(s|t)(ion)$/ ->
-        String.replace_suffix(word, "ion", "")
-      true ->
-        word
+    if Rules.r2(word) =~ r_suffix do
+      {:found, String.replace(word, r_suffix, "")}
+    else
+      {:not_found, word}
+    end
+  end
+
+  defp remove_suffix_ion(word) do
+    if Rules.r2(word) =~ ~r/(s|t)ion$/ do
+      {:found, String.replace_suffix(word, "ion", "")}
+    else
+      {:not_found, word}
     end
   end
 end
