@@ -26,6 +26,9 @@ defmodule Stemmer.Step4 do
 
       iex> Stemmer.Step4.remove_suffix_in_r2("addition")
       "addit"
+
+      iex> Stemmer.Step4.remove_suffix_in_r2("agreement")
+      "agreement"
   """
   def remove_suffix_in_r2(word) do
     {_, word} =
@@ -40,8 +43,17 @@ defmodule Stemmer.Step4 do
   defp remove_suffix(word) do
     r_suffix = ~r/(al|ance|ence|er|ic|able|ible|ant|ement|ment|ent|ism|ate|iti|ous|ive|ize)$/
 
-    if Rules.r2(word) =~ r_suffix do
-      {:found, String.replace(word, r_suffix, "")}
+    if matches = Regex.run(r_suffix, word) do
+      suffix = List.first(matches)
+      remove_suffix_in_r2(word, suffix)
+    else
+      {:next, word}
+    end
+  end
+
+  defp remove_suffix_in_r2(word, suffix) do
+    if Rules.r2(word) =~ suffix do
+      {:found, String.replace_suffix(word, suffix, "")}
     else
       {:next, word}
     end
