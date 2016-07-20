@@ -18,6 +18,10 @@ Stemmer.stem(["extraordinary", "capabilities"]) # => ["extraordinari", "capabl"]
 
 Stemmer is 100% compatible with the official Porter2 implementation, it is tested against the official [`diffs.txt`](http://snowball.tartarus.org/algorithms/english/diffs.txt) which contains more than 29000 words.
 
+## Naive Bayes
+
+Stemmer was built to support the [Simple Bayes](https://github.com/fredwu/simple_bayes) library. :heart:
+
 ## License
 
 Licensed under [MIT](http://fredwu.mit-license.org/).
