@@ -49,19 +49,21 @@ defmodule Stemmer.Rules do
       "al"
   """
   def r1(word) do
-    r_prefix = ~r/^(gener|commun|arsen)/
+    Regex.run(~r/^(gener|commun|arsen)/, word) |> match_r1(word)
+  end
 
-    if word =~ r_prefix do
-      String.replace(word, r_prefix, "")
-    else
-      normal_r1(word)
-    end
+  defp match_r1(nil, word), do: normal_r1(word)
+  defp match_r1(match, word) do
+    String.replace_prefix(word, List.first(match), "")
   end
 
   defp normal_r1(word) do
-    if word =~ r_vc do
-      String.replace(word, r_vc, "")
-    end || ""
+    Regex.run(r_vc, word) |> match_normal_r1(word)
+  end
+
+  defp match_normal_r1(nil, _word), do: ""
+  defp match_normal_r1(match, word) do
+    String.replace_prefix(word, List.first(match), "")
   end
 
   @doc """
