@@ -14,10 +14,8 @@ defmodule Stemmer.Step1b do
   """
   def replace_suffix(word) do
     {_, word} =
-      with {:next, _word} <- replace_eed_eedly(word, "eedly"),
-           {:next, _word} <- remove_ed_edly_ing_ingly(word, "ingly|edly"),
-           {:next, _word} <- replace_eed_eedly(word, "eed"),
-           {:next, _word} <- remove_ed_edly_ing_ingly(word, "ing|ed")
+      with {:next, _word} <- replace_eed_eedly(word, "eedly|eed"),
+           {:next, _word} <- remove_ed_edly_ing_ingly(word, "ingly|edly|ing|ed")
         do {:found, word}
       end
 
