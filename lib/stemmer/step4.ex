@@ -41,15 +41,13 @@ defmodule Stemmer.Step4 do
   end
 
   defp remove_suffix(word) do
-    r_suffix = ~r/(al|ance|ence|er|ic|able|ible|ant|ement|ment|ent|ism|ate|iti|ous|ive|ize)$/
-
-    if matches = Regex.run(r_suffix, word) do
-      suffix = List.first(matches)
-      remove_suffix_in_r2(word, suffix)
-    else
-      {:next, word}
-    end
+    ~r/(al|ance|ence|er|ic|able|ible|ant|ement|ment|ent|ism|ate|iti|ous|ive|ize)$/
+    |> Regex.run(word)
+    |> match_suffix(word)
   end
+
+  defp match_suffix(nil, word),   do: {:next, word}
+  defp match_suffix(match, word), do: remove_suffix_in_r2(word, List.first(match))
 
   defp remove_suffix_in_r2(word, suffix) do
     if Rules.r2(word) =~ suffix do
