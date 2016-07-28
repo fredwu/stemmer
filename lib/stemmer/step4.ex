@@ -50,7 +50,7 @@ defmodule Stemmer.Step4 do
   defp match_suffix(match, word), do: remove_suffix_in_r2(word, List.first(match))
 
   defp remove_suffix_in_r2(word, suffix) do
-    if Rules.r2(word) =~ suffix do
+    if String.ends_with?(Rules.r2(word), suffix) do
       {:found, String.replace_suffix(word, suffix, "")}
     else
       {:found, word}
@@ -58,7 +58,7 @@ defmodule Stemmer.Step4 do
   end
 
   defp remove_suffix_ion(word) do
-    if Rules.r2(word) =~ ~r/ion$/ && word =~ ~r/(s|t)ion$/ do
+    if String.ends_with?(Rules.r2(word), "ion") && String.ends_with?(word, ["sion", "tion"]) do
       {:found, String.replace_suffix(word, "ion", "")}
     else
       {:next, word}

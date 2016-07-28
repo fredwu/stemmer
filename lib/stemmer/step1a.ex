@@ -33,7 +33,7 @@ defmodule Stemmer.Step1a do
       {:found, "actress"}
   """
   def replace_sses(word) do
-    if word =~ ~r/sses$/ do
+    if String.ends_with?(word, "sses") do
       {:found, String.replace_suffix(word, "sses", "ss")}
     else
       {:next, word}
@@ -56,7 +56,7 @@ defmodule Stemmer.Step1a do
       {:found, "cri"}
   """
   def replace_ied_ies(word) do
-    if word =~ ~r/(ied|ies)$/ do
+    if String.ends_with?(word, ["ied", "ies"]) do
       word = if String.length(word) > 4 do
         word
         |> String.replace_suffix("ied", "i")
@@ -82,7 +82,7 @@ defmodule Stemmer.Step1a do
       {:found, "abyss"}
   """
   def leave_us_ss(word) do
-    if word =~ ~r/(us|ss)$/ do
+    if String.ends_with?(word, ["us", "ss"]) do
       {:found, word}
     else
       {:next, word}

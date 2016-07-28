@@ -43,11 +43,11 @@ defmodule Stemmer.Step5 do
     word_r2 = Rules.r2(word)
 
     cond do
-      word_r2 =~ ~r/e$/ ->
+      String.ends_with?(word_r2, "e") ->
         String.replace_suffix(word, "e", "")
-      Rules.r1(word) =~ ~r/e$/ && not (word =~ ~r/#{Rules.short_syllable()}e$/) ->
+      String.ends_with?(Rules.r1(word), "e") && not (word =~ ~r/#{Rules.short_syllable()}e$/) ->
         String.replace_suffix(word, "e", "")
-      word_r2 =~ ~r/l$/ && word =~ ~r/ll$/ ->
+      String.ends_with?(word_r2, "l") && String.ends_with?(word, "ll") ->
         String.replace_suffix(word, "l", "")
       true ->
         word

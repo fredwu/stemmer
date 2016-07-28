@@ -129,7 +129,7 @@ defmodule Stemmer.Step2 do
   end
 
   defp replace_suffix_ogi(word) do
-    if Rules.r1(word) =~ ~r/ogi$/ && word =~ ~r/logi$/ do
+    if String.ends_with?(Rules.r1(word), "ogi") && String.ends_with?(word, "logi") do
       {:found, String.replace_suffix(word, "ogi", "og")}
     else
       {:next, word}
@@ -137,7 +137,7 @@ defmodule Stemmer.Step2 do
   end
 
   defp replace_suffix_li(word) do
-    if Rules.r1(word) =~ ~r/li$/ && word =~ ~r/#{Rules.li_ending}li$/ do
+    if String.ends_with?(Rules.r1(word), "li") && String.ends_with?(word, Rules.li_endings()) do
       {:found, String.replace_suffix(word, "li", "")}
     else
       {:next, word}

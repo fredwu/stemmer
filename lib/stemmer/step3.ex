@@ -54,7 +54,7 @@ defmodule Stemmer.Step3 do
   end
 
   defp replace_suffix_ative_in_r2(word) do
-    if Rules.r2(word) =~ ~r/ative$/ do
+    if String.ends_with?(Rules.r2(word), "ative") do
       {:found, String.replace_suffix(word, "ative", "")}
     else
       {:next, word}

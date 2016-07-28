@@ -23,8 +23,8 @@ defmodule Stemmer.Step1c do
   """
   def replace_suffix_y(word) do
     cond do
-      word =~ ~r/.+#{Rules.consonant()}[y]$/ -> String.replace_suffix(word, "y", "i")
-      word =~ ~r/.+#{Rules.consonant()}[Y]$/ -> String.replace_suffix(word, "Y", "i")
+      word =~ ~r/.+#{Rules.consonant()}y$/ -> String.replace_suffix(word, "y", "i")
+      word =~ ~r/.+#{Rules.consonant()}Y$/ -> String.replace_suffix(word, "Y", "i")
       true -> word
     end
   end
