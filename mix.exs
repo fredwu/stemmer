@@ -3,25 +3,29 @@ defmodule Stemmer.Mixfile do
 
   def project do
     [
-      app:             :stemmer,
-      version:         "1.0.1",
-      elixir:          "~> 1.3",
-      name:            "Stemmer",
-      package:         package(),
-      description:     "An English (Porter2) stemming implementation in Elixir.",
-      build_embedded:  Mix.env == :prod,
-      start_permanent: Mix.env == :prod,
-      deps:            deps(),
-      aliases:         ["publish": ["hex.publish", &git_tag/1]]
+      app:               :stemmer,
+      version:           "1.0.1",
+      elixir:            "~> 1.5",
+      name:              "Stemmer",
+      package:           package(),
+      description:       "An English (Porter2) stemming implementation in Elixir.",
+      start_permanent:   Mix.env == :prod,
+      deps:              deps(),
+      test_coverage:     [tool: ExCoveralls],
+      preferred_cli_env: [coveralls: :test],
+      aliases:           ["publish": ["hex.publish", &git_tag/1]],
     ]
   end
 
   def application do
-    [applications: [:logger]]
+    [extra_applications: [:logger]]
   end
 
   defp deps do
-    [{:ex_doc, ">= 0.0.0", only: :dev}]
+    [
+      {:ex_doc,      ">= 0.0.0", only: :dev},
+      {:excoveralls, "~> 0.7",   only: :test}
+    ]
   end
 
   defp package do

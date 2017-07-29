@@ -1,4 +1,4 @@
-# Stemmer [![Travis](https://img.shields.io/travis/fredwu/stemmer.svg)](https://travis-ci.org/fredwu/stemmer) [![Hex.pm](https://img.shields.io/hexpm/v/stemmer.svg)](https://hex.pm/packages/stemmer)
+# Stemmer [![Travis](https://img.shields.io/travis/fredwu/stemmer.svg)](https://travis-ci.org/fredwu/stemmer) [![Coverage](https://coveralls.io/repos/github/fredwu/stemmer/badge.svg?branch=master)](https://coveralls.io/github/fredwu/stemmer?branch=master) [![Hex.pm](https://img.shields.io/hexpm/v/stemmer.svg)](https://hex.pm/packages/stemmer)
 
 An English ([Porter2](http://snowballstem.org/algorithms/english/stemmer.html)) stemming implementation in Elixir.
 
