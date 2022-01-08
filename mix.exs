@@ -23,8 +23,8 @@ defmodule Stemmer.Mixfile do
 
   defp deps do
     [
-      {:ex_doc,      ">= 0.0.0", only: :dev},
-      {:excoveralls, "~> 0.7",   only: :test}
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
+      {:excoveralls, "~> 0.14.4", only: :test, runtime: false}
     ]
   end
 
