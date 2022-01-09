@@ -13,7 +13,7 @@ defmodule Stemmer.Mixfile do
       deps:              deps(),
       test_coverage:     [tool: ExCoveralls],
       preferred_cli_env: [coveralls: :test],
-      aliases:           ["publish": ["hex.publish", &git_tag/1]],
+      aliases:           [publish: ["hex.publish", &git_tag/1]],
     ]
   end
 
@@ -24,7 +24,7 @@ defmodule Stemmer.Mixfile do
   defp deps do
     [
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
-      {:excoveralls, "~> 0.14.4", only: :test, runtime: false}
+      {:excoveralls, "~> 0.14", only: :test, runtime: false}
     ]
   end
 

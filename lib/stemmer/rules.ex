@@ -58,7 +58,7 @@ defmodule Stemmer.Rules do
   end
 
   defp normal_r1(word) do
-    Regex.run(r_vc, word) |> match_normal_r1(word)
+    Regex.run(r_vc(), word) |> match_normal_r1(word)
   end
 
   defp match_normal_r1(nil, _word), do: ""
