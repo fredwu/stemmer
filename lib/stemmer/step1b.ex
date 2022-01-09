@@ -15,8 +15,8 @@ defmodule Stemmer.Step1b do
   def replace_suffix(word) do
     {_, word} =
       with {:next, _word} <- replace_eed_eedly(word),
-           {:next, _word} <- remove_ed_edly_ing_ingly(word)
-        do {:found, word}
+           {:next, _word} <- remove_ed_edly_ing_ingly(word) do
+        {:found, word}
       end
 
     word
@@ -45,13 +45,14 @@ defmodule Stemmer.Step1b do
   end
 
   defp replace_eed_eedly_in_r1(word) do
-    word = if String.ends_with?(Rules.r1(word), ["eedly", "eed"]) do
-      word
-      |> String.replace_suffix("eedly", "ee")
-      |> String.replace_suffix("eed", "ee")
-    else
-      word
-    end
+    word =
+      if String.ends_with?(Rules.r1(word), ["eedly", "eed"]) do
+        word
+        |> String.replace_suffix("eedly", "ee")
+        |> String.replace_suffix("eed", "ee")
+      else
+        word
+      end
 
     {:found, word}
   end
@@ -78,9 +79,10 @@ defmodule Stemmer.Step1b do
     r_ending = ~r/(#{Rules.vowel()}.*)(ingly|edly|ing|ed)$/
 
     if word =~ r_ending do
-      word = word
-      |> String.replace(r_ending, "\\1")
-      |> post_remove_ed_edly_ing_ingly()
+      word =
+        word
+        |> String.replace(r_ending, "\\1")
+        |> post_remove_ed_edly_ing_ingly()
 
       {:found, word}
     else
@@ -90,10 +92,10 @@ defmodule Stemmer.Step1b do
 
   defp post_remove_ed_edly_ing_ingly(word) do
     cond do
-      String.ends_with?(word, ~w(at bl iz))    -> word <> "e"
+      String.ends_with?(word, ~w(at bl iz)) -> word <> "e"
       String.ends_with?(word, Rules.doubles()) -> String.slice(word, 0..-2)
-      Rules.short?(word)                       -> word <> "e"
-      true                                     -> word
+      Rules.short?(word) -> word <> "e"
+      true -> word
     end
   end
 end

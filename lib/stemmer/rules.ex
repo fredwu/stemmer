@@ -1,16 +1,16 @@
 defmodule Stemmer.Rules do
-  @v              "aeiouy"
-  @vowel          "[#{@v}]"
-  @non_vowel_wxy  "[^#{@v}wxY]"
-  @consonant      "[^#{@v}]"
+  @v "aeiouy"
+  @vowel "[#{@v}]"
+  @non_vowel_wxy "[^#{@v}wxY]"
+  @consonant "[^#{@v}]"
   @short_syllable "((#{@consonant}#{@vowel}#{@non_vowel_wxy})|(^#{@vowel}#{@consonant}))"
 
-  def vowel,          do: @vowel
-  def consonant,      do: @consonant
-  def doubles,        do: ~w(bb dd ff gg mm nn pp rr tt)
-  def li_endings,     do: ~w(cli dli eli gli hli kli mli nli rli tli)
+  def vowel, do: @vowel
+  def consonant, do: @consonant
+  def doubles, do: ~w(bb dd ff gg mm nn pp rr tt)
+  def li_endings, do: ~w(cli dli eli gli hli kli mli nli rli tli)
   def short_syllable, do: @short_syllable
-  def r_vc,           do: ~r/^#{@consonant}*#{@vowel}+#{@consonant}/
+  def r_vc, do: ~r/^#{@consonant}*#{@vowel}+#{@consonant}/
 
   @doc """
   R1 is the region after the first non-vowel following a vowel, or is the null
@@ -53,6 +53,7 @@ defmodule Stemmer.Rules do
   end
 
   defp match_r1(nil, word), do: normal_r1(word)
+
   defp match_r1(match, word) do
     String.replace_prefix(word, List.first(match), "")
   end
@@ -62,6 +63,7 @@ defmodule Stemmer.Rules do
   end
 
   defp match_normal_r1(nil, _word), do: ""
+
   defp match_normal_r1(match, word) do
     String.replace_prefix(word, List.first(match), "")
   end
