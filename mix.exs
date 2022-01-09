@@ -3,17 +3,17 @@ defmodule Stemmer.Mixfile do
 
   def project do
     [
-      app:               :stemmer,
-      version:           "1.0.2",
-      elixir:            "~> 1.5",
-      name:              "Stemmer",
-      package:           package(),
-      description:       "An English (Porter2) stemming implementation in Elixir.",
-      start_permanent:   Mix.env == :prod,
-      deps:              deps(),
-      test_coverage:     [tool: ExCoveralls],
+      app: :stemmer,
+      version: "1.0.2",
+      elixir: "~> 1.5",
+      name: "Stemmer",
+      package: package(),
+      description: "An English (Porter2) stemming implementation in Elixir.",
+      start_permanent: Mix.env() == :prod,
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [coveralls: :test],
-      aliases:           ["publish": ["hex.publish", &git_tag/1]],
+      aliases: [publish: ["hex.publish", &git_tag/1]]
     ]
   end
 
@@ -23,22 +23,22 @@ defmodule Stemmer.Mixfile do
 
   defp deps do
     [
-      {:ex_doc,      ">= 0.0.0", only: :dev},
-      {:excoveralls, "~> 0.7",   only: :test}
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
+      {:excoveralls, "~> 0.14", only: :test, runtime: false}
     ]
   end
 
   defp package do
     [
       maintainers: ["Fred Wu"],
-      licenses:    ["MIT"],
-      links:       %{"GitHub" => "https://github.com/fredwu/stemmer"}
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/fredwu/stemmer"}
     ]
   end
 
   defp git_tag(_args) do
-    System.cmd "git", ["tag", "v" <> Mix.Project.config[:version]]
-    System.cmd "git", ["push"]
-    System.cmd "git", ["push", "--tags"]
+    System.cmd("git", ["tag", "v" <> Mix.Project.config()[:version]])
+    System.cmd("git", ["push"])
+    System.cmd("git", ["push", "--tags"])
   end
 end

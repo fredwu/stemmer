@@ -33,8 +33,8 @@ defmodule Stemmer.Step4 do
   def remove_suffix_in_r2(word) do
     {_, word} =
       with {:next, _word} <- remove_suffix(word),
-           {:next, _word} <- remove_suffix_ion(word)
-        do {:found, word}
+           {:next, _word} <- remove_suffix_ion(word) do
+        {:found, word}
       end
 
     word
@@ -46,7 +46,7 @@ defmodule Stemmer.Step4 do
     |> match_suffix(word)
   end
 
-  defp match_suffix(nil, word),   do: {:next, word}
+  defp match_suffix(nil, word), do: {:next, word}
   defp match_suffix(match, word), do: remove_suffix_in_r2(word, List.first(match))
 
   defp remove_suffix_in_r2(word, suffix) do

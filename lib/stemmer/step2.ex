@@ -121,8 +121,8 @@ defmodule Stemmer.Step2 do
            {:next, _word} <- Rules.replace_suffix_in_r1(word, "alli", "al"),
            {:next, _word} <- Rules.replace_suffix_in_r1(word, "bli", "ble"),
            {:next, _word} <- replace_suffix_ogi(word),
-           {:next, _word} <- replace_suffix_li(word)
-        do {:found, word}
+           {:next, _word} <- replace_suffix_li(word) do
+        {:found, word}
       end
 
     word

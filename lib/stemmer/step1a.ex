@@ -17,8 +17,8 @@ defmodule Stemmer.Step1a do
       with {:next, _word} <- replace_sses(word),
            {:next, _word} <- replace_ied_ies(word),
            {:next, _word} <- leave_us_ss(word),
-           {:next, _word} <- remove_s(word)
-        do {:found, word}
+           {:next, _word} <- remove_s(word) do
+        {:found, word}
       end
 
     word
@@ -57,15 +57,16 @@ defmodule Stemmer.Step1a do
   """
   def replace_ied_ies(word) do
     if String.ends_with?(word, ["ied", "ies"]) do
-      word = if String.length(word) > 4 do
-        word
-        |> String.replace_suffix("ied", "i")
-        |> String.replace_suffix("ies", "i")
-      else
-        word
-        |> String.replace_suffix("ied", "ie")
-        |> String.replace_suffix("ies", "ie")
-      end
+      word =
+        if String.length(word) > 4 do
+          word
+          |> String.replace_suffix("ied", "i")
+          |> String.replace_suffix("ies", "i")
+        else
+          word
+          |> String.replace_suffix("ied", "ie")
+          |> String.replace_suffix("ies", "ie")
+        end
 
       {:found, word}
     else

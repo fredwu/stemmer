@@ -15,16 +15,16 @@ defmodule Stemmer.SpecialWord do
   """
   def special_word(word) do
     mapping = %{
-      "skis"   => "ski",
-      "skies"  => "sky",
-      "dying"  => "die",
-      "lying"  => "lie",
-      "tying"  => "tie",
-      "idly"   => "idl",
+      "skis" => "ski",
+      "skies" => "sky",
+      "dying" => "die",
+      "lying" => "lie",
+      "tying" => "tie",
+      "idly" => "idl",
       "gently" => "gentl",
-      "ugly"   => "ugli",
-      "early"  => "earli",
-      "only"   => "onli",
+      "ugly" => "ugli",
+      "early" => "earli",
+      "only" => "onli",
       "singly" => "singl"
     }
 

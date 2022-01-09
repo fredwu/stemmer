@@ -22,9 +22,9 @@ defmodule Stemmer do
   """
   def stem(input) do
     cond do
-      is_list(input) -> input |> Stream.map(&(stem(&1))) |> Enum.to_list
-      input =~ " "   -> input |> String.split() |> stem()
-      true           -> Stemmer.Engine.start(input)
+      is_list(input) -> input |> Stream.map(&stem(&1)) |> Enum.to_list()
+      input =~ " " -> input |> String.split() |> stem()
+      true -> Stemmer.Engine.start(input)
     end
   end
 end

@@ -41,6 +41,7 @@ defmodule Stemmer.Engine do
   end
 
   defp post_special_word({true, word}), do: word
+
   defp post_special_word({false, word}) do
     word
     |> Rules.invariant?()
@@ -48,6 +49,7 @@ defmodule Stemmer.Engine do
   end
 
   defp post_invariant({true, word}), do: word
+
   defp post_invariant({false, word}) do
     word
     |> Stemmer.Step0.apply()
@@ -57,6 +59,7 @@ defmodule Stemmer.Engine do
   end
 
   defp post_invariant_after_1a({true, word}), do: word
+
   defp post_invariant_after_1a({false, word}) do
     word
     |> Stemmer.Step1b.apply()

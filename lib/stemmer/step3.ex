@@ -46,8 +46,8 @@ defmodule Stemmer.Step3 do
            {:next, _word} <- Rules.replace_suffix_in_r1(word, "ical", "ic"),
            {:next, _word} <- Rules.replace_suffix_in_r1(word, "ness", ""),
            {:next, _word} <- Rules.replace_suffix_in_r1(word, "ful", ""),
-           {:next, _word} <- replace_suffix_ative_in_r2(word)
-        do {:found, word}
+           {:next, _word} <- replace_suffix_ative_in_r2(word) do
+        {:found, word}
       end
 
     word
