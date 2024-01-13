@@ -93,9 +93,15 @@ defmodule Stemmer.Step1b do
   defp post_remove_ed_edly_ing_ingly(word) do
     cond do
       String.ends_with?(word, ~w(at bl iz)) -> word <> "e"
-      String.ends_with?(word, Rules.doubles()) -> String.slice(word, 0..-2//1)
+      String.ends_with?(word, Rules.doubles()) -> String.slice(word, range_to_end(-2))
       Rules.short?(word) -> word <> "e"
       true -> word
     end
+  end
+
+  if Version.match?(System.version(), ">= 1.16.0") do
+    defp range_to_end(offset), do: Range.new(0, offset, 1)
+  else
+    defp range_to_end(offset), do: (0..offset)
   end
 end
