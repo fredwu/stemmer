@@ -93,7 +93,7 @@ defmodule Stemmer.Step1b do
   defp post_remove_ed_edly_ing_ingly(word) do
     cond do
       String.ends_with?(word, ~w(at bl iz)) -> word <> "e"
-      String.ends_with?(word, Rules.doubles()) -> String.slice(word, 0..-2)
+      String.ends_with?(word, Rules.doubles()) -> String.slice(word, 0..-2//1)
       Rules.short?(word) -> word <> "e"
       true -> word
     end

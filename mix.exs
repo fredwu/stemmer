@@ -4,8 +4,8 @@ defmodule Stemmer.Mixfile do
   def project do
     [
       app: :stemmer,
-      version: "1.1.0",
-      elixir: "~> 1.5",
+      version: "1.2.0",
+      elixir: "~> 1.12",
       name: "Stemmer",
       package: package(),
       description: "An English (Porter2) stemming implementation in Elixir.",
